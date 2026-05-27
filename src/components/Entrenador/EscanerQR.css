@@ -1,0 +1,382 @@
+/* EscanerQR.css */
+.escaner-qr {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.header-actions {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.header-actions h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #1f2937;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Contenedor principal */
+.escaner-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Selector de evento */
+.selector-evento {
+  margin-bottom: 1.5rem;
+}
+
+.selector-evento label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.85rem;
+}
+
+.selector-evento label i {
+  margin-right: 0.3rem;
+  color: #2e7d32;
+}
+
+.selector-evento select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.8rem;
+  font-size: 0.9rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.selector-evento select:focus {
+  outline: none;
+  border-color: #2e7d32;
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.1);
+}
+
+/* Info del evento */
+.evento-info {
+  background: #dcfce7;
+  padding: 0.8rem 1rem;
+  border-radius: 0.8rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #166534;
+  border-left: 3px solid #2e7d32;
+}
+
+.evento-info i {
+  font-size: 1.1rem;
+}
+
+.evento-info strong {
+  font-weight: 600;
+}
+
+/* Área del escáner */
+.scanner-area {
+  background: #f9fafb;
+  border-radius: 1rem;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  min-height: 300px;
+  border: 1px solid #e5e7eb;
+}
+
+.scanner-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+  min-height: 300px;
+}
+
+.scanner-placeholder i {
+  font-size: 4rem;
+  color: #d1d5db;
+  margin-bottom: 1rem;
+}
+
+.scanner-placeholder p {
+  color: #6b7280;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+}
+
+.btn-iniciar-scanner {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.btn-iniciar-scanner:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
+}
+
+.btn-iniciar-scanner:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.warning {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 0.8rem;
+}
+
+/* Escáner activo */
+.scanner-active {
+  position: relative;
+}
+
+.scanner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  background: #1f2937;
+  color: white;
+}
+
+.scanner-header span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.btn-cerrar-scanner {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 0.4rem;
+  transition: all 0.2s;
+}
+
+.btn-cerrar-scanner:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.qr-reader-container {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+}
+
+.instrucciones {
+  padding: 0.8rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Último registro */
+.ultimo-registro {
+  background: #dcfce7;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-left: 3px solid #10b981;
+}
+
+.ultimo-registro h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  color: #166534;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.registro-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.registro-info p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #374151;
+  background: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+}
+
+.registro-info p strong {
+  color: #166534;
+}
+
+/* Detalle de asistencia */
+.detalle-asistencia {
+  background: #f9fafb;
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+}
+
+.detalle-asistencia h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detalle-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detalle-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.6rem;
+  background: white;
+  border-radius: 0.6rem;
+  font-size: 0.8rem;
+  border: 1px solid #f3f4f6;
+}
+
+.detalle-item i {
+  width: 1.5rem;
+  color: #2e7d32;
+}
+
+.detalle-item.estado .asistio {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.detalle-item.pago-pendiente .pendiente {
+  color: #d97706;
+  font-weight: 600;
+}
+
+.detalle-item.pago-realizado .realizado {
+  color: #10b981;
+  font-weight: 600;
+}
+
+/* Loading */
+.loading-container {
+  text-align: center;
+  padding: 2rem;
+  color: #2e7d32;
+}
+
+.loading-container i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .escaner-qr {
+    padding: 1rem;
+  }
+  
+  .scanner-placeholder {
+    padding: 2rem;
+    min-height: 250px;
+  }
+  
+  .scanner-placeholder i {
+    font-size: 3rem;
+  }
+  
+  .detalle-item {
+    flex-wrap: wrap;
+  }
+  
+  .registro-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .registro-info p {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 480px) {
+  .escaner-qr {
+    padding: 0.8rem;
+  }
+  
+  .header-actions h2 {
+    font-size: 1.1rem;
+  }
+  
+  .selector-evento select {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
+  
+  .btn-iniciar-scanner {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.85rem;
+  }
+  
+  .scanner-placeholder {
+    padding: 1.5rem;
+  }
+  
+  .scanner-placeholder i {
+    font-size: 2.5rem;
+  }
+  
+  .detalle-item {
+    font-size: 0.75rem;
+  }
+}

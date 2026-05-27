@@ -1,0 +1,51 @@
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+/* Botones responsivos */
+.btn-primary, .btn-secondary, button {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:active, .btn-secondary:active, button:active {
+  transform: scale(0.98);
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none;
+  }
+  
+  .full-width-mobile {
+    width: 100%;
+  }
+  
+  .stack-mobile {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .hide-small {
+    display: none;
+  }
+  
+  .text-center-small {
+    text-align: center;
+  }
+}

@@ -1,0 +1,307 @@
+/* Login.css - Estilo Futbolístico */
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #1a472a 0%, #0d2818 100%);
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Patrón de césped */
+.login-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 40px,
+      rgba(255, 255, 255, 0.03) 40px,
+      rgba(255, 255, 255, 0.03) 80px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 40px,
+      rgba(255, 255, 255, 0.02) 40px,
+      rgba(255, 255, 255, 0.02) 80px
+    );
+  pointer-events: none;
+}
+
+/* Líneas de cal en el fondo */
+.login-container::after {
+  content: '';
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    white,
+    white 20px,
+    transparent 20px,
+    transparent 40px
+  );
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.login-card {
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 2rem;
+  padding: 2.2rem;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  animation: fadeInUp 0.5s ease;
+  position: relative;
+  z-index: 1;
+  border-top: 4px solid #ffd700;
+  border-bottom: 4px solid #ffd700;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logo-icon {
+  width: 100px;
+  height: 100px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  animation: rebotarPelota 2s ease-in-out infinite;
+}
+
+@keyframes rebotarPelota {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.logo-icon i {
+  font-size: 5rem;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  animation: girarPelota 4s linear infinite;
+}
+
+@keyframes girarPelota {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.login-header h1 {
+  font-size: 1.6rem;
+  color: #1a472a;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.login-header p {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  border: 2px solid #e5e7eb;
+  border-radius: 2rem;
+  padding: 0.8rem 1.2rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.input-group:hover,
+.input-group:focus-within {
+  border-color: #ffd700;
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+}
+
+.input-group i {
+  color: #9ca3af;
+  margin-right: 0.8rem;
+  font-size: 1.1rem;
+  transition: color 0.3s;
+}
+
+.input-group:focus-within i {
+  color: #ff8c00;
+}
+
+.input-group input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: transparent;
+}
+
+.input-group input::placeholder {
+  color: #bbb;
+}
+
+.error-message {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  text-align: center;
+  border-left: 3px solid #dc2626;
+}
+
+.reset-message {
+  padding: 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.reset-message.success {
+  background: #dcfce7;
+  color: #166534;
+  border-left: 3px solid #22c55e;
+}
+
+.reset-message.error {
+  background: #fee2e2;
+  color: #dc2626;
+  border-left: 3px solid #dc2626;
+}
+
+.login-btn {
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  color: #1a472a;
+  border: none;
+  padding: 1rem;
+  border-radius: 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.login-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+}
+
+.login-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.login-links {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.forgot-link,
+.back-link {
+  background: none;
+  border: none;
+  color: #2e7d32;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.3s;
+  text-decoration: underline;
+}
+
+.forgot-link:hover,
+.back-link:hover {
+  color: #ff8c00;
+}
+
+.login-footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  text-align: center;
+}
+
+.contacto-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #1a472a;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.contacto-info i {
+  color: #ff8c00;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 1.5rem;
+  }
+  
+  .logo-icon {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .logo-icon i {
+    font-size: 4rem;
+  }
+  
+  .login-header h1 {
+    font-size: 1.3rem;
+  }
+  
+  .input-group {
+    padding: 0.6rem 1rem;
+  }
+  
+  .login-btn {
+    padding: 0.8rem;
+    font-size: 1rem;
+  }
+  
+  .contacto-info {
+    font-size: 0.8rem;
+  }
+}

@@ -1,0 +1,255 @@
+/* MisPagos.css */
+
+.mis-pagos {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.header-mis-pagos {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.header-mis-pagos h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  color: #1f2937;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.header-mis-pagos h2 i {
+  color: #2e7d32;
+  font-size: 1.5rem;
+}
+
+.header-mis-pagos .subtitle {
+  color: #6b7280;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+/* Tarjeta de deuda */
+.resumen-deuda {
+  margin-bottom: 1.5rem;
+}
+
+.deuda-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #f3f4f6 100%);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s;
+}
+
+.deuda-card i {
+  font-size: 2.5rem;
+  color: #2e7d32;
+}
+
+.deuda-card .deuda-info {
+  flex: 1;
+}
+
+.deuda-card .deuda-info span {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.deuda-card .deuda-info strong {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+}
+
+.deuda-card.pendiente {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-color: #fecaca;
+}
+
+.deuda-card.pendiente i {
+  color: #ef4444;
+}
+
+.deuda-card.pendiente .deuda-info strong {
+  color: #dc2626;
+}
+
+.deuda-card.pagado {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-color: #bbf7d0;
+}
+
+.deuda-card.pagado i {
+  color: #10b981;
+}
+
+.deuda-card.pagado .deuda-info strong {
+  color: #10b981;
+}
+
+.deuda-monto {
+  color: #dc2626;
+}
+
+.deuda-monto-cero {
+  color: #10b981;
+}
+
+.deuda-mensaje {
+  font-size: 0.7rem;
+  color: #dc2626;
+  margin-top: 0.3rem;
+}
+
+.deuda-mensaje-success {
+  font-size: 0.7rem;
+  color: #10b981;
+  margin-top: 0.3rem;
+}
+
+/* Información adicional */
+.info-adicional {
+  background: #f0fdf4;
+  border-radius: 0.8rem;
+  padding: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  border-left: 3px solid #2e7d32;
+}
+
+.info-adicional i {
+  color: #2e7d32;
+  font-size: 1.2rem;
+  margin-top: 0.1rem;
+}
+
+.info-adicional p {
+  font-size: 0.75rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+.info-adicional .contacto-info {
+  margin-top: 0.3rem;
+  color: #6b7280;
+  font-size: 0.7rem;
+}
+
+/* Todo bien */
+.todo-bien {
+  text-align: center;
+  padding: 2rem;
+  background: #f0fdf4;
+  border-radius: 1rem;
+  border: 1px solid #bbf7d0;
+}
+
+.todo-bien i {
+  font-size: 3rem;
+  color: #10b981;
+  margin-bottom: 0.5rem;
+}
+
+.todo-bien h3 {
+  color: #1f2937;
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+}
+
+.todo-bien p {
+  color: #6b7280;
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* Loading */
+.loading-container {
+  text-align: center;
+  padding: 3rem;
+  color: #2e7d32;
+}
+
+.loading-container i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  animation: spin 1s linear infinite;
+}
+
+.loading-container p {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mis-pagos {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .deuda-card {
+    padding: 1rem;
+  }
+
+  .deuda-card i {
+    font-size: 2rem;
+  }
+
+  .deuda-card .deuda-info strong {
+    font-size: 1.5rem;
+  }
+
+  .todo-bien {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mis-pagos {
+    padding: 0.8rem;
+  }
+
+  .header-mis-pagos h2 {
+    font-size: 1.1rem;
+  }
+
+  .deuda-card {
+    padding: 0.8rem;
+  }
+
+  .deuda-card i {
+    font-size: 1.5rem;
+  }
+
+  .deuda-card .deuda-info strong {
+    font-size: 1.2rem;
+  }
+}

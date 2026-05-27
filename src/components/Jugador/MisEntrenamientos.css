@@ -1,0 +1,537 @@
+/* MisEntrenamientos.css */
+.mis-entrenamientos {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.header-mis-entrenamientos {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.mis-entrenamientos h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #1f2937;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 0.3rem 0;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Secciones */
+.seccion-entrenamientos {
+  margin-bottom: 2rem;
+}
+
+.seccion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.seccion-entrenamientos h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+.contador {
+  background: #e5e7eb;
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.7rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+/* Grid de entrenamientos */
+.entrenamientos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 1rem;
+}
+
+/* Tarjeta de entrenamiento */
+.entrenamiento-card-jugador {
+  background: #f9fafb;
+  border-radius: 1rem;
+  padding: 1.2rem;
+  display: flex;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.entrenamiento-card-jugador:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-color: #d1d5db;
+}
+
+/* Fecha destacada */
+.fecha-destacada {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  border-radius: 1rem;
+  padding: 0.8rem;
+  text-align: center;
+  min-width: 70px;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dia {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  line-height: 1;
+}
+
+.mes {
+  display: block;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: capitalize;
+}
+
+/* Información del entrenamiento */
+.info-entrenamiento {
+  flex: 1;
+}
+
+.info-entrenamiento h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.3rem 0;
+}
+
+.info-entrenamiento p {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0.3rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.info-entrenamiento p i {
+  width: 1rem;
+  color: #2e7d32;
+}
+
+.hora {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.lugar {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.objetivo {
+  font-size: 0.8rem !important;
+  color: #4b5563 !important;
+  margin-top: 0.5rem !important;
+  padding-top: 0.5rem;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.monto {
+  font-size: 0.8rem !important;
+  font-weight: 600;
+  color: #1b5e20 !important;
+  background: #dcfce7;
+  display: inline-flex !important;
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  width: fit-content;
+}
+
+.duracion {
+  font-size: 0.75rem !important;
+  color: #6b7280 !important;
+}
+
+/* Acciones */
+.accion-entrenamiento {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  min-width: 110px;
+}
+
+/* Estado actual */
+.estado-actual {
+  margin-bottom: 0.3rem;
+}
+
+.estado-badge {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.estado-asistire {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.estado-no-asistire {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.estado-sin-responder {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Badges de estado (legado) */
+.estado-apuntado {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.estado-asistio {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.estado-falta {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.estado-no {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Botones de votación */
+.botones-votacion {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.btn-votar {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  border: none;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  font-size: 0.65rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-si {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.btn-si:hover, .btn-si.active {
+  background: #10b981;
+  color: white;
+}
+
+.btn-no {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.btn-no:hover, .btn-no.active {
+  background: #ef4444;
+  color: white;
+}
+
+/* Botones antiguos (legado) */
+.btn-apuntarse {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  color: white;
+  border: none;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-apuntarse:hover {
+  transform: scale(1.02);
+  box-shadow: 0 2px 5px rgba(27, 94, 32, 0.3);
+}
+
+.btn-cancelar {
+  background: #fef3c7;
+  color: #d97706;
+  border: none;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-cancelar:hover {
+  background: #fde68a;
+}
+
+.check-asistencia {
+  font-size: 0.65rem;
+  color: #2e7d32;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.falta-registrada {
+  font-size: 0.65rem;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+/* Historial */
+.historial-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.historial-card {
+  background: #f9fafb;
+  border-radius: 0.8rem;
+  padding: 0.8rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.historial-card:hover {
+  background: #f3f4f6;
+}
+
+.fecha-historial {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.fecha-historial i {
+  color: #2e7d32;
+}
+
+.info-historial {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.lugar-historial {
+  font-size: 0.75rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.estado-small {
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+}
+
+/* Estados vacíos */
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  background: #f9fafb;
+  border-radius: 1rem;
+  color: #9ca3af;
+}
+
+.empty-state i {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #d1d5db;
+}
+
+.empty-state p {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.empty-state-total {
+  text-align: center;
+  padding: 3rem;
+  background: #f9fafb;
+  border-radius: 1rem;
+  color: #9ca3af;
+}
+
+.empty-state-total i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #d1d5db;
+}
+
+.empty-state-total p {
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* Loading */
+.loading-container {
+  text-align: center;
+  padding: 2rem;
+  color: #2e7d32;
+}
+
+.loading-container i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mis-entrenamientos {
+    padding: 1rem;
+  }
+  
+  .entrenamientos-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .entrenamiento-card-jugador {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .fecha-destacada {
+    align-self: center;
+  }
+  
+  .accion-entrenamiento {
+    align-items: center;
+  }
+  
+  .botones-votacion {
+    justify-content: center;
+  }
+  
+  .btn-apuntarse, .btn-cancelar {
+    width: auto;
+    min-width: 80px;
+  }
+  
+  .historial-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .info-historial {
+    justify-content: center;
+  }
+  
+  .seccion-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .monto {
+    display: inline-block !important;
+    margin: 0 auto !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .mis-entrenamientos {
+    padding: 0.8rem;
+  }
+  
+  .mis-entrenamientos h2 {
+    font-size: 1.1rem;
+  }
+  
+  .info-entrenamiento h4 {
+    font-size: 0.9rem;
+  }
+  
+  .entrenamiento-card-jugador {
+    padding: 0.8rem;
+  }
+  
+  .accion-entrenamiento {
+    width: 100%;
+  }
+  
+  .botones-votacion {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .btn-votar {
+    padding: 0.5rem;
+    font-size: 0.7rem;
+  }
+  
+  .estado-badge {
+    white-space: normal;
+    text-align: center;
+  }
+  
+  .btn-apuntarse, .btn-cancelar {
+    width: 100%;
+  }
+}

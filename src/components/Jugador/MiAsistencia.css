@@ -1,0 +1,323 @@
+/* MiAsistencia.css */
+.mi-asistencia {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.header-mi-asistencia {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.header-mi-asistencia h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #1f2937;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 0.3rem 0;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Estadísticas */
+.stats-mi-asistencia {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stat-icon {
+  font-size: 2rem;
+}
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-info h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.stat-info p {
+  font-size: 0.7rem;
+  color: #6b7280;
+  margin: 0.2rem 0 0.5rem;
+}
+
+.progress-bar {
+  background: #e5e7eb;
+  border-radius: 1rem;
+  height: 6px;
+  overflow: hidden;
+  margin: 0.3rem 0;
+}
+
+.progress {
+  background: #2e7d32;
+  border-radius: 1rem;
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+.porcentaje {
+  font-size: 0.65rem;
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+/* Filtros */
+.filtros-asistencia {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filtros-asistencia button {
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  background: #f3f4f6;
+  color: #4b5563;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+
+.filtros-asistencia button:hover {
+  background: #e5e7eb;
+}
+
+.filtros-asistencia button.active {
+  background: #2e7d32;
+  color: white;
+}
+
+/* Lista de eventos */
+.eventos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.evento-card {
+  background: #f9fafb;
+  border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.evento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.evento-card.asistio, .evento-card.jugo {
+  border-left: 3px solid #10b981;
+}
+
+.evento-card.apuntado, .evento-card.convocado {
+  border-left: 3px solid #3b82f6;
+}
+
+.evento-card.falta {
+  border-left: 3px solid #ef4444;
+}
+
+.evento-card.no_apuntado, .evento-card.no_convocado {
+  border-left: 3px solid #9ca3af;
+}
+
+.evento-fecha {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  text-align: center;
+  min-width: 60px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.evento-fecha .dia {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: white;
+  line-height: 1;
+}
+
+.evento-fecha .mes {
+  display: block;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: capitalize;
+}
+
+.evento-info {
+  flex: 1;
+}
+
+.evento-info h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.3rem 0;
+}
+
+.evento-info p {
+  font-size: 0.7rem;
+  color: #6b7280;
+  margin: 0.2rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.evento-info p i {
+  width: 1rem;
+  color: #2e7d32;
+}
+
+.objetivo, .campos {
+  font-size: 0.7rem !important;
+  color: #4b5563 !important;
+  margin-top: 0.3rem !important;
+  padding-top: 0.3rem;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.evento-estado {
+  display: flex;
+  align-items: center;
+}
+
+.estado-badge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.estado-asistio, .estado-jugo {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.estado-apuntado, .estado-convocado {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.estado-falta {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.estado-no {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Loading y empty */
+.loading-container, .empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #2e7d32;
+}
+
+.loading-container i, .empty-state i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.loading-container i {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.empty-state {
+  color: #9ca3af;
+}
+
+.empty-state i {
+  color: #d1d5db;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mi-asistencia {
+    padding: 1rem;
+  }
+  
+  .stats-mi-asistencia {
+    grid-template-columns: 1fr;
+  }
+  
+  .evento-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .evento-fecha {
+    align-self: center;
+  }
+  
+  .evento-info p {
+    justify-content: center;
+  }
+  
+  .evento-estado {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .mi-asistencia {
+    padding: 0.8rem;
+  }
+  
+  .header-mi-asistencia h2 {
+    font-size: 1.1rem;
+  }
+  
+  .filtros-asistencia {
+    justify-content: center;
+  }
+  
+  .estado-badge {
+    white-space: normal;
+    text-align: center;
+  }
+}

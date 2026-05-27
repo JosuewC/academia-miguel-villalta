@@ -1,0 +1,290 @@
+/* ModalPago.css - Estilo Futbolístico */
+
+.modal-pago-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-pago-container {
+  background: white;
+  border-radius: 1.5rem;
+  width: 90%;
+  max-width: 400px;
+  overflow: hidden;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border-top: 4px solid #ffd700;
+  border-bottom: 4px solid #ffd700;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-pago-header {
+  background: linear-gradient(135deg, #1a472a 0%, #0d2818 100%);
+  padding: 1.2rem;
+  text-align: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.modal-pago-icon {
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-pago-icon i {
+  font-size: 1.5rem;
+  color: #1a472a;
+}
+
+.modal-pago-header h3 {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+  text-align: left;
+}
+
+.modal-pago-close {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.modal-pago-close i {
+  font-size: 1rem;
+}
+
+.modal-pago-close:hover {
+  background: rgba(255, 215, 0, 0.3);
+  transform: scale(1.05);
+}
+
+.modal-pago-body {
+  padding: 1.5rem;
+  background: white;
+}
+
+.info-jugador,
+.info-evento,
+.info-monto {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.info-jugador:last-child,
+.info-evento:last-child,
+.info-monto:last-child {
+  border-bottom: none;
+}
+
+.info-icon {
+  width: 40px;
+  height: 40px;
+  background: #f3f4f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-icon i {
+  font-size: 1.2rem;
+  color: #ff8c00;
+}
+
+.info-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.info-label {
+  font-size: 0.7rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-value {
+  font-size: 0.9rem;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.info-value.monto {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #dc2626;
+}
+
+.modal-pago-footer {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.5rem 1.5rem;
+  background: white;
+}
+
+.btn-pago-cancelar,
+.btn-pago-confirmar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-pago-cancelar {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.btn-pago-cancelar:hover {
+  background: #e5e7eb;
+  transform: translateY(-2px);
+}
+
+.btn-pago-confirmar {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.btn-pago-confirmar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.modal-pago-info {
+  padding: 0.8rem 1.5rem 1.5rem;
+  text-align: center;
+  background: #fffbeb;
+  border-top: 1px solid #fef3c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.modal-pago-info i {
+  color: #f59e0b;
+  font-size: 0.8rem;
+}
+
+.modal-pago-info small {
+  color: #92400e;
+  font-size: 0.7rem;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .modal-pago-container {
+    max-width: 320px;
+  }
+  
+  .modal-pago-header {
+    padding: 1rem;
+  }
+  
+  .modal-pago-icon {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .modal-pago-icon i {
+    font-size: 1.2rem;
+  }
+  
+  .modal-pago-header h3 {
+    font-size: 1rem;
+  }
+  
+  .modal-pago-body {
+    padding: 1rem;
+  }
+  
+  .info-icon {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .info-icon i {
+    font-size: 1rem;
+  }
+  
+  .info-value {
+    font-size: 0.8rem;
+  }
+  
+  .info-value.monto {
+    font-size: 1rem;
+  }
+  
+  .btn-pago-cancelar,
+  .btn-pago-confirmar {
+    padding: 0.6rem;
+    font-size: 0.75rem;
+  }
+  
+  .btn-pago-cancelar span,
+  .btn-pago-confirmar span {
+    display: none;
+  }
+  
+  .btn-pago-cancelar i,
+  .btn-pago-confirmar i {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}

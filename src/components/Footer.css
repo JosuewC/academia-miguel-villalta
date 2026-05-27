@@ -1,0 +1,200 @@
+/* Footer.css - Estilo Futbolístico */
+
+.footer {
+  background: linear-gradient(135deg, #1a472a 0%, #0d2818 100%);
+  border-top: 3px solid #ffd700;
+  padding: 2rem 1.5rem 1rem;
+  margin-top: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Patrón de césped */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 40px,
+      rgba(255, 255, 255, 0.02) 40px,
+      rgba(255, 255, 255, 0.02) 80px
+    );
+  pointer-events: none;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #ffd700;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.footer-logo i {
+  font-size: 1.8rem;
+  animation: girarPelota 3s linear infinite;
+}
+
+@keyframes girarPelota {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.footer-info {
+  text-align: center;
+}
+
+.footer-motto {
+  color: #a5d6a7;
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-bottom: 0.3rem;
+}
+
+.footer-copyright {
+  color: #6b7280;
+  font-size: 0.7rem;
+}
+
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #c8e6c9;
+  font-size: 0.75rem;
+}
+
+.contact-item i {
+  color: #ffd700;
+  width: 1.2rem;
+  font-size: 0.8rem;
+}
+
+.footer-social {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-link {
+  width: 35px;
+  height: 35px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffd700;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-link:hover {
+  background: #ffd700;
+  color: #1a472a;
+  transform: translateY(-3px);
+}
+
+.social-link i {
+  font-size: 1rem;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-bottom p {
+  color: #6b7280;
+  font-size: 0.65rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer {
+    padding: 1.5rem 1rem 1rem;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .footer-logo {
+    justify-content: center;
+  }
+  
+  .footer-contact {
+    align-items: center;
+  }
+  
+  .footer-social {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 1rem 0.8rem 0.8rem;
+  }
+  
+  .footer-logo i {
+    font-size: 1.3rem;
+  }
+  
+  .footer-logo span {
+    font-size: 0.9rem;
+  }
+  
+  .footer-motto {
+    font-size: 0.7rem;
+  }
+  
+  .footer-copyright {
+    font-size: 0.6rem;
+  }
+  
+  .contact-item {
+    font-size: 0.65rem;
+  }
+  
+  .social-link {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .social-link i {
+    font-size: 0.8rem;
+  }
+  
+  .footer-bottom p {
+    font-size: 0.55rem;
+  }
+}

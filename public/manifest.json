@@ -1,0 +1,25 @@
+{
+  "short_name": "Academia MV",
+  "name": "Academia Miguel Villalta",
+  "icons": [
+    {
+      "src": "https://img.icons8.com/color/144/football2.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "https://img.icons8.com/color/192/football2.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://img.icons8.com/color/512/football2.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1a472a",
+  "background_color": "#1a472a"
+}

@@ -1,0 +1,513 @@
+/* MisPartidos.css */
+.mis-partidos {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.header-mis-partidos {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.mis-partidos h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #1f2937;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 0.3rem 0;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Secciones */
+.seccion-partidos {
+  margin-bottom: 2rem;
+}
+
+.seccion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.seccion-partidos h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+.contador {
+  background: #e5e7eb;
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.7rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+/* Grid de partidos */
+.partidos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1rem;
+}
+
+/* Tarjeta de partido */
+.partido-card-jugador {
+  background: #f9fafb;
+  border-radius: 1rem;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.partido-card-jugador:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-color: #d1d5db;
+}
+
+/* Rival destacado */
+.rival-destacado {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #2e7d32;
+}
+
+.rival-destacado i {
+  font-size: 1.3rem;
+  color: #2e7d32;
+}
+
+.rival-destacado h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Información del partido */
+.info-partido {
+  margin-bottom: 0.8rem;
+}
+
+.info-partido h4 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.3rem 0;
+}
+
+.info-partido p {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0.3rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-partido p i {
+  width: 1rem;
+  color: #2e7d32;
+}
+
+.monto {
+  font-size: 0.7rem !important;
+  font-weight: 600;
+  color: #1b5e20 !important;
+  background: #dcfce7;
+  display: inline-flex !important;
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  width: fit-content;
+}
+
+/* Buseta info */
+.buseta-info {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.buseta-info p {
+  font-size: 0.7rem;
+  margin: 0.2rem 0;
+  color: #6b7280;
+}
+
+.campos-reservados {
+  color: #10b981 !important;
+  font-weight: 500;
+}
+
+/* Acciones */
+.accion-partido {
+  margin-top: 0.8rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.estado-actual {
+  margin-bottom: 0.5rem;
+}
+
+.estado-badge {
+  display: inline-block;
+  padding: 0.25rem 0.7rem;
+  border-radius: 1rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.estado-convocado {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.estado-jugo {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.estado-falta {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.estado-no {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Botones de votación */
+.botones-votacion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  width: 100%;
+}
+
+.btn-asistir, .btn-no-asistir, .btn-cancelar-asistencia {
+  flex: 1;
+  padding: 0.4rem;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-asistir {
+  background: #10b981;
+  color: white;
+}
+
+.btn-asistir:hover {
+  background: #059669;
+}
+
+.btn-no-asistir, .btn-cancelar-asistencia {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-no-asistir:hover, .btn-cancelar-asistencia:hover {
+  background: #dc2626;
+}
+
+.btn-reservar-campos, .btn-modificar-campos {
+  background: #fef3c7;
+  color: #d97706;
+  border: none;
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 500;
+  width: 100%;
+  margin-bottom: 0.3rem;
+}
+
+.btn-reservar-campos:hover, .btn-modificar-campos:hover {
+  background: #fde68a;
+}
+
+/* Selector de campos */
+.selector-campos {
+  background: #f9fafb;
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  margin-top: 0.5rem;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+}
+
+.selector-campos label {
+  font-size: 0.7rem;
+  color: #374151;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.campos-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.campos-input button {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 0.4rem;
+  background: #e5e7eb;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.campos-input button:hover {
+  background: #d1d5db;
+}
+
+.campos-input span {
+  font-size: 1.2rem;
+  font-weight: 600;
+  min-width: 40px;
+  text-align: center;
+}
+
+.total-campos {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1b5e20;
+  margin: 0.5rem 0;
+}
+
+.selector-botones {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.btn-confirmar, .btn-cancelar-selector {
+  flex: 1;
+  padding: 0.4rem;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.btn-confirmar {
+  background: #10b981;
+  color: white;
+}
+
+.btn-confirmar:hover {
+  background: #059669;
+}
+
+.btn-cancelar-selector {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+.btn-cancelar-selector:hover {
+  background: #e5e7eb;
+}
+
+/* Historial */
+.historial-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.historial-card {
+  background: #f9fafb;
+  border-radius: 0.8rem;
+  padding: 0.8rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.historial-card:hover {
+  background: #f3f4f6;
+}
+
+.fecha-historial {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.fecha-historial i {
+  color: #2e7d32;
+}
+
+.info-historial {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.rival-historial {
+  font-size: 0.75rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.campos-historial {
+  font-size: 0.65rem;
+  background: #fef3c7;
+  color: #d97706;
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+}
+
+.estado-small {
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+}
+
+/* Estados vacíos */
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  background: #f9fafb;
+  border-radius: 1rem;
+  color: #9ca3af;
+}
+
+.empty-state i {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #d1d5db;
+}
+
+.empty-state p {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* Loading */
+.loading-container {
+  text-align: center;
+  padding: 2rem;
+  color: #2e7d32;
+}
+
+.loading-container i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mis-partidos {
+    padding: 1rem;
+  }
+  
+  .partidos-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .partido-card-jugador {
+    flex-direction: column;
+  }
+  
+  .accion-partido {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .selector-campos {
+    margin-top: 0.5rem;
+  }
+  
+  .historial-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .info-historial {
+    justify-content: center;
+  }
+  
+  .seccion-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .mis-partidos {
+    padding: 0.8rem;
+  }
+  
+  .mis-partidos h2 {
+    font-size: 1.1rem;
+  }
+  
+  .info-partido h4 {
+    font-size: 0.85rem;
+  }
+  
+  .campos-input button {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .selector-botones {
+    flex-direction: column;
+  }
+}

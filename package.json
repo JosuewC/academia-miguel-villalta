@@ -1,0 +1,46 @@
+{
+  "name": "equipo-futbol",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "node server.js",
+    "client": "cross-env PORT=3000 react-scripts start",
+    "build": "react-scripts build",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^6.10.1",
+    "pg": "^8.21.0",
+    "qrcode.react": "^3.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-qr-reader": "^3.0.0-beta-1",
+    "react-scripts": "^5.0.1",
+    "web-vitals": "^5.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-react": "^7.29.7",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3"
+  },
+  "proxy": "http://localhost:5001",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
