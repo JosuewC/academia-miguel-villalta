@@ -110,23 +110,6 @@
   border-radius: 1rem;
 }
 
-.btn-generar-pagos {
-  background: #fef3c7;
-  color: #d97706;
-  border: none;
-  padding: 0.3rem 0.6rem;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  font-size: 0.7rem;
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-.btn-generar-pagos:hover {
-  background: #fde68a;
-}
-
 .entrenamiento-body {
   padding: 1rem;
   display: flex;
@@ -134,7 +117,7 @@
   gap: 1rem;
 }
 
-.objetivo, .duracion, .monto {
+.objetivo, .duracion {
   font-size: 0.8rem;
   color: #4b5563;
   display: flex;
@@ -148,6 +131,7 @@
   display: flex;
   gap: 0.5rem;
   border-top: 1px solid #e5e7eb;
+  flex-wrap: wrap;
 }
 
 .entrenamiento-footer button {
@@ -182,6 +166,17 @@
   background: #fde68a;
 }
 
+/* Botón CANCELAR - nuevo */
+.btn-cancelar {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.btn-cancelar:hover {
+  background: #fde68a;
+}
+
+/* Botón ELIMINAR */
 .btn-eliminar {
   background: #fee2e2;
   color: #ef4444;
@@ -189,6 +184,16 @@
 
 .btn-eliminar:hover {
   background: #fecaca;
+}
+
+/* Badge para eventos futuros (opcional) */
+.badge-futuro {
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 0.65rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+  margin-left: 0.5rem;
 }
 
 /* Modal */
@@ -357,9 +362,17 @@ form {
   margin: 0;
 }
 
-.resumen-card.verde { border-left: 3px solid #10b981; }
-.resumen-card.roja { border-left: 3px solid #ef4444; }
-.resumen-card.gris { border-left: 3px solid #9ca3af; }
+.resumen-card.verde {
+  border-left: 3px solid #10b981;
+}
+
+.resumen-card.roja {
+  border-left: 3px solid #ef4444;
+}
+
+.resumen-card.gris {
+  border-left: 3px solid #9ca3af;
+}
 
 /* Secciones de asistencia */
 .asistencia-seccion {
@@ -396,52 +409,18 @@ form {
   border-bottom: 1px solid #e5e7eb;
 }
 
-/* Items de asistencia - SOLO LECTURA (sin botones) */
+/* Items de asistencia - SOLO LECTURA */
 .asistencia-item-view {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.8rem 1rem;
   border-bottom: 1px solid #f3f4f6;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .asistencia-item-view:last-child {
-  border-bottom: none;
-}
-
-.estado-badge-view {
-  padding: 0.25rem 0.7rem;
-  border-radius: 1rem;
-  font-size: 0.7rem;
-  font-weight: 500;
-  text-align: center;
-}
-
-.estado-badge-view.verde {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.estado-badge-view.roja {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.estado-badge-view.gris {
-  background: #f3f4f6;
-  color: #6b7280;
-}
-
-/* Items de asistencia - con acciones (para mantener compatibilidad) */
-.asistencia-seccion .asistencia-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.8rem 1rem;
-  border-bottom: 1px solid #f3f4f6;
-}
-
-.asistencia-seccion .asistencia-item:last-child {
   border-bottom: none;
 }
 
@@ -474,35 +453,25 @@ form {
   border-radius: 1rem;
 }
 
-.estado-actual {
-  flex: 1;
-  text-align: center;
-}
-
-/* Badges */
-.badge-apuntado, .badge-asistio, .badge-falta, .badge-no {
-  padding: 0.2rem 0.6rem;
+.estado-badge-view {
+  padding: 0.25rem 0.7rem;
   border-radius: 1rem;
   font-size: 0.7rem;
   font-weight: 500;
+  text-align: center;
 }
 
-.badge-apuntado {
-  background: #dbeafe;
-  color: #1e40af;
-}
-
-.badge-asistio {
+.estado-badge-view.verde {
   background: #dcfce7;
   color: #166534;
 }
 
-.badge-falta {
+.estado-badge-view.roja {
   background: #fee2e2;
   color: #991b1b;
 }
 
-.badge-no {
+.estado-badge-view.gris {
   background: #f3f4f6;
   color: #6b7280;
 }
@@ -512,7 +481,8 @@ form {
   border-top: 1px solid #e5e7eb;
 }
 
-.loading-container, .empty-state {
+.loading-container,
+.empty-state {
   text-align: center;
   padding: 2rem;
   color: #2e7d32;
@@ -543,38 +513,28 @@ form {
   .gestion-entrenamientos {
     padding: 1rem;
   }
-  
+
   .entrenamiento-header {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .form-row {
     grid-template-columns: 1fr;
   }
-  
+
   .asistencia-resumen {
     flex-direction: column;
   }
-  
+
   .asistencia-item-view {
     flex-direction: column;
     gap: 0.8rem;
     text-align: center;
   }
-  
-  .asistencia-seccion .asistencia-item {
-    flex-direction: column;
-    gap: 0.8rem;
-    text-align: center;
-  }
-  
+
   .jugador-info {
     justify-content: center;
-  }
-  
-  .estado-actual {
-    width: 100%;
   }
 }
 
@@ -582,13 +542,26 @@ form {
   .gestion-entrenamientos {
     padding: 0.8rem;
   }
-  
+
   .entrenamiento-footer {
-    flex-wrap: wrap;
+    flex-direction: column;
   }
-  
+
   .entrenamiento-footer button {
-    flex: 1;
+    width: 100%;
     justify-content: center;
+  }
+
+  .asistencia-resumen {
+    flex-direction: column;
+  }
+
+  .resumen-card {
+    justify-content: center;
+  }
+
+  .jugador-info {
+    flex-direction: column;
+    text-align: center;
   }
 }

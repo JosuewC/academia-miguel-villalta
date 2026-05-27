@@ -96,6 +96,64 @@ function GestionEntrenamientos({ onDataChange, showToast: propShowToast }) {
     }
   };
 
+  // CANCELAR entrenamiento (con notificación)
+  const handleCancelar = async (id, fecha, lugar) => {
+    setConfirmConfig({
+      title: 'Cancelar Entrenamiento',
+      message: `¿Cancelar el entrenamiento del ${formatearFecha(fecha)} en ${lugar}?\n\nSe enviará una notificación a TODOS los jugadores.`,
+      onConfirm: async () => {
+        try {
+          const response = await fetch(`http://localhost:5001/api/entrenamientos/${id}/cancelar`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+          });
+          
+          if (response.ok) {
+            showToast('✅ Entrenamiento cancelado. Notificaciones enviadas a los jugadores', 'success');
+            await cargarDatos();
+            if (onDataChange) onDataChange();
+          } else {
+            const error = await response.json();
+            showToast('Error al cancelar: ' + error.error, 'error');
+          }
+          setShowConfirmModal(false);
+        } catch (error) {
+          showToast('Error al cancelar: ' + error.message, 'error');
+          setShowConfirmModal(false);
+        }
+      },
+      onCancel: () => setShowConfirmModal(false),
+      type: 'danger'
+    });
+    setShowConfirmModal(true);
+  };
+
+  // ELIMINAR entrenamiento (sin notificación - solo limpieza)
+  const handleEliminar = (id, fecha) => {
+    setConfirmConfig({
+      title: 'Eliminar Entrenamiento',
+      message: `¿Eliminar el entrenamiento del ${formatearFecha(fecha)}?\n\n⚠️ Esto NO enviará notificaciones a los jugadores. Es solo para limpieza de registros.`,
+      onConfirm: async () => {
+        try {
+          await deleteEntrenamiento(id);
+          await cargarDatos();
+          showToast('Entrenamiento eliminado correctamente', 'success');
+          if (onDataChange) onDataChange();
+          setShowConfirmModal(false);
+        } catch (error) {
+          showToast('Error al eliminar: ' + error.message, 'error');
+          setShowConfirmModal(false);
+        }
+      },
+      onCancel: () => setShowConfirmModal(false),
+      type: 'info'
+    });
+    setShowConfirmModal(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -122,28 +180,6 @@ function GestionEntrenamientos({ onDataChange, showToast: propShowToast }) {
       showToast('Error: ' + error.message, 'error');
     }
     setLoading(false);
-  };
-
-  const handleDelete = (id, nombre) => {
-    setConfirmConfig({
-      title: 'Eliminar Entrenamiento',
-      message: `¿Estás seguro de que deseas eliminar este entrenamiento${nombre ? ` "${nombre}"` : ''}?`,
-      onConfirm: async () => {
-        try {
-          await deleteEntrenamiento(id);
-          await cargarDatos();
-          showToast('Entrenamiento eliminado correctamente', 'success');
-          if (onDataChange) onDataChange();
-          setShowConfirmModal(false);
-        } catch (error) {
-          showToast('Error al eliminar: ' + error.message, 'error');
-          setShowConfirmModal(false);
-        }
-      },
-      onCancel: () => setShowConfirmModal(false),
-      type: 'danger'
-    });
-    setShowConfirmModal(true);
   };
 
   const verListaAsistencia = async (entrenamiento) => {
@@ -193,6 +229,14 @@ function GestionEntrenamientos({ onDataChange, showToast: propShowToast }) {
     return { asistiran, noAsistiran, sinResponder };
   };
 
+  // Verificar si un entrenamiento es futuro (para mostrar botón cancelar)
+  const esFuturo = (fecha) => {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const fechaObj = new Date(fecha);
+    return fechaObj >= hoy;
+  };
+
   if (loading && entrenamientos.length === 0) {
     return <div className="loading-container">Cargando entrenamientos...</div>;
   }
@@ -214,58 +258,71 @@ function GestionEntrenamientos({ onDataChange, showToast: propShowToast }) {
             <button className="btn-primary" onClick={() => setShowForm(true)}>Agendar primer entrenamiento</button>
           </div>
         ) : (
-          entrenamientos.map(ent => (
-            <div key={ent.id} className="entrenamiento-card">
-              <div className="entrenamiento-header">
-                <div className="fecha-info">
-                  <i className="fas fa-calendar"></i>
-                  <div>
-                    <h3>{formatearFecha(ent.fecha)}</h3>
-                    <p><i className="fas fa-clock"></i> {formatearHora(ent.hora)} · {ent.lugar}</p>
+          entrenamientos.map(ent => {
+            const esEventoFuturo = esFuturo(ent.fecha);
+            
+            return (
+              <div key={ent.id} className="entrenamiento-card">
+                <div className="entrenamiento-header">
+                  <div className="fecha-info">
+                    <i className="fas fa-calendar"></i>
+                    <div>
+                      <h3>{formatearFecha(ent.fecha)}</h3>
+                      <p><i className="fas fa-clock"></i> {formatearHora(ent.hora)} · {ent.lugar}</p>
+                    </div>
+                  </div>
+                  {ent.monto_pago > 0 && (
+                    <div className="monto-info">
+                      <span className="monto">💰 ${ent.monto_pago}</span>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="entrenamiento-body">
+                  <div className="objetivo">
+                    <i className="fas fa-bullseye"></i>
+                    <strong>Objetivo:</strong> {ent.objetivo || 'No especificado'}
+                  </div>
+                  <div className="duracion">
+                    <i className="fas fa-hourglass-half"></i>
+                    <strong>Duración:</strong> {ent.duracion || 'No especificada'}
                   </div>
                 </div>
-                {ent.monto_pago > 0 && (
-                  <div className="monto-info">
-                    <span className="monto">💰 ${ent.monto_pago}</span>
-                  </div>
-                )}
-              </div>
-              
-              <div className="entrenamiento-body">
-                <div className="objetivo">
-                  <i className="fas fa-bullseye"></i>
-                  <strong>Objetivo:</strong> {ent.objetivo || 'No especificado'}
+                
+                <div className="entrenamiento-footer">
+                  <button className="btn-asistencia" onClick={() => verListaAsistencia(ent)}>
+                    <i className="fas fa-clipboard-list"></i> <span>Ver Asistencia</span>
+                  </button>
+                  <button className="btn-editar" onClick={() => { 
+                    setEditando(ent); 
+                    setFormData({
+                      fecha: ent.fecha,
+                      hora: ent.hora,
+                      lugar: ent.lugar,
+                      duracion: ent.duracion || '2 horas',
+                      objetivo: ent.objetivo || '',
+                      monto_pago: ent.monto_pago || ''
+                    }); 
+                    setShowForm(true); 
+                  }}>
+                    <i className="fas fa-edit"></i>
+                  </button>
+                  
+                  {/* Botón CANCELAR - solo para eventos futuros (envía notificación) */}
+                  {esEventoFuturo && (
+                    <button className="btn-cancelar" onClick={() => handleCancelar(ent.id, ent.fecha, ent.lugar)}>
+                      <i className="fas fa-ban"></i> Cancelar
+                    </button>
+                  )}
+                  
+                  {/* Botón ELIMINAR - siempre visible (NO envía notificación) */}
+                  <button className="btn-eliminar" onClick={() => handleEliminar(ent.id, ent.fecha)}>
+                    <i className="fas fa-trash"></i> Eliminar
+                  </button>
                 </div>
-                <div className="duracion">
-                  <i className="fas fa-hourglass-half"></i>
-                  <strong>Duración:</strong> {ent.duracion || 'No especificada'}
-                </div>
               </div>
-              
-              <div className="entrenamiento-footer">
-                <button className="btn-asistencia" onClick={() => verListaAsistencia(ent)}>
-                  <i className="fas fa-clipboard-list"></i> <span>Ver Asistencia</span>
-                </button>
-                <button className="btn-editar" onClick={() => { 
-                  setEditando(ent); 
-                  setFormData({
-                    fecha: ent.fecha,
-                    hora: ent.hora,
-                    lugar: ent.lugar,
-                    duracion: ent.duracion || '2 horas',
-                    objetivo: ent.objetivo || '',
-                    monto_pago: ent.monto_pago || ''
-                  }); 
-                  setShowForm(true); 
-                }}>
-                  <i className="fas fa-edit"></i>
-                </button>
-                <button className="btn-eliminar" onClick={() => handleDelete(ent.id, `del ${formatearFecha(ent.fecha)}`)}>
-                  <i className="fas fa-trash"></i>
-                </button>
-              </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
 

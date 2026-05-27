@@ -143,23 +143,6 @@
   font-weight: 600;
 }
 
-.btn-generar-pagos {
-  background: #fef3c7;
-  color: #d97706;
-  border: none;
-  padding: 0.3rem 0.6rem;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  font-size: 0.7rem;
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-.btn-generar-pagos:hover {
-  background: #fde68a;
-}
-
 /* Buseta info */
 .partido-buseta {
   background: #fef3c7;
@@ -184,6 +167,7 @@
   gap: 0.5rem;
   justify-content: flex-end;
   margin-top: 1rem;
+  flex-wrap: wrap;
 }
 
 .partido-footer button {
@@ -218,6 +202,17 @@
   background: #fde68a;
 }
 
+/* Botón CANCELAR - nuevo */
+.btn-cancelar {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.btn-cancelar:hover {
+  background: #fde68a;
+}
+
+/* Botón ELIMINAR */
 .btn-eliminar {
   background: #fee2e2;
   color: #ef4444;
@@ -225,6 +220,16 @@
 
 .btn-eliminar:hover {
   background: #fecaca;
+}
+
+/* Badge para eventos futuros (opcional) */
+.badge-futuro {
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 0.65rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+  margin-left: 0.5rem;
 }
 
 /* Modal */
@@ -481,6 +486,8 @@ small {
   align-items: center;
   padding: 0.8rem 1rem;
   border-bottom: 1px solid #f3f4f6;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .convocatoria-item-view:last-child {
@@ -585,13 +592,11 @@ small {
   }
 
   .partido-footer {
-    flex-wrap: wrap;
+    flex-direction: column;
   }
 
-  .btn-convocatoria,
-  .btn-editar,
-  .btn-eliminar {
-    flex: 1;
+  .partido-footer button {
+    width: 100%;
     justify-content: center;
   }
 

@@ -1081,7 +1081,6 @@ app.post('/api/entrenamientos', verificarToken, async (req, res) => {
         const jugadores = await pool.query(`SELECT * FROM usuarios WHERE rol = 'jugador' AND activo = true`);
         const entrenamientoData = { id: nuevoId, fecha, hora, lugar, duracion, objetivo, monto_pago: monto };
         
-        // Llamar a la función de envío (puedes usar la misma lógica que en el endpoint)
         try {
             for (const jugador of jugadores.rows) {
                 if (jugador.email) {
@@ -1208,19 +1207,33 @@ app.put('/api/entrenamientos/:id', verificarToken, async (req, res) => {
     }
 });
 
-// ============ ENTRENAMIENTOS - ELIMINAR ============
-app.delete('/api/entrenamientos/:id', verificarToken, async (req, res) => {
+// ============ ENTRENAMIENTOS - CANCELAR (con notificación) ============
+app.post('/api/entrenamientos/:id/cancelar', verificarToken, async (req, res) => {
     try {
-        const entrenamiento = await pool.query(`SELECT * FROM entrenamientos WHERE id=$1`, [req.params.id]);
+        const entrenamiento = await pool.query(`SELECT * FROM entrenamientos WHERE id = $1`, [req.params.id]);
         
-        await pool.query(`DELETE FROM entrenamientos WHERE id=$1`, [req.params.id]);
-        
-        // Enviar notificación de CANCELACIÓN
-        if (entrenamiento.rows.length > 0) {
-            const jugadores = await pool.query(`SELECT * FROM usuarios WHERE rol = 'jugador' AND activo = true`);
-            await enviarNotificacionEntrenamientoCancelado(entrenamiento.rows[0], jugadores.rows);
+        if (entrenamiento.rows.length === 0) {
+            return res.status(404).json({ error: 'Entrenamiento no encontrado' });
         }
         
+        // Enviar notificación de CANCELACIÓN
+        const jugadores = await pool.query(`SELECT * FROM usuarios WHERE rol = 'jugador' AND activo = true`);
+        await enviarNotificacionEntrenamientoCancelado(entrenamiento.rows[0], jugadores.rows);
+        
+        // Eliminar el entrenamiento
+        await pool.query(`DELETE FROM entrenamientos WHERE id = $1`, [req.params.id]);
+        
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error al cancelar entrenamiento:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// ============ ENTRENAMIENTOS - ELIMINAR (sin notificación - solo limpieza) ============
+app.delete('/api/entrenamientos/:id', verificarToken, async (req, res) => {
+    try {
+        await pool.query(`DELETE FROM entrenamientos WHERE id = $1`, [req.params.id]);
         res.json({ success: true });
     } catch (error) {
         console.error('Error al eliminar entrenamiento:', error);
@@ -1388,19 +1401,33 @@ app.put('/api/partidos/:id', verificarToken, async (req, res) => {
     }
 });
 
-// ============ PARTIDOS - ELIMINAR ============
-app.delete('/api/partidos/:id', verificarToken, async (req, res) => {
+// ============ PARTIDOS - CANCELAR (con notificación) ============
+app.post('/api/partidos/:id/cancelar', verificarToken, async (req, res) => {
     try {
-        const partido = await pool.query(`SELECT * FROM partidos WHERE id=$1`, [req.params.id]);
+        const partido = await pool.query(`SELECT * FROM partidos WHERE id = $1`, [req.params.id]);
         
-        await pool.query(`DELETE FROM partidos WHERE id=$1`, [req.params.id]);
-        
-        // Enviar notificación de CANCELACIÓN
-        if (partido.rows.length > 0) {
-            const jugadores = await pool.query(`SELECT * FROM usuarios WHERE rol = 'jugador' AND activo = true`);
-            await enviarNotificacionPartidoCancelado(partido.rows[0], jugadores.rows);
+        if (partido.rows.length === 0) {
+            return res.status(404).json({ error: 'Partido no encontrado' });
         }
         
+        // Enviar notificación de CANCELACIÓN
+        const jugadores = await pool.query(`SELECT * FROM usuarios WHERE rol = 'jugador' AND activo = true`);
+        await enviarNotificacionPartidoCancelado(partido.rows[0], jugadores.rows);
+        
+        // Eliminar el partido
+        await pool.query(`DELETE FROM partidos WHERE id = $1`, [req.params.id]);
+        
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error al cancelar partido:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// ============ PARTIDOS - ELIMINAR (sin notificación - solo limpieza) ============
+app.delete('/api/partidos/:id', verificarToken, async (req, res) => {
+    try {
+        await pool.query(`DELETE FROM partidos WHERE id = $1`, [req.params.id]);
         res.json({ success: true });
     } catch (error) {
         console.error('Error al eliminar partido:', error);

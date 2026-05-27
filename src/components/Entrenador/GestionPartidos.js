@@ -78,6 +78,64 @@ function GestionPartidos({ onDataChange, showToast: propShowToast }) {
     }
   };
 
+  // CANCELAR partido (con notificación)
+  const handleCancelar = async (id, rival, fecha) => {
+    setConfirmConfig({
+      title: 'Cancelar Partido',
+      message: `¿Cancelar el partido vs ${rival} del ${formatearFecha(fecha)}?\n\nSe enviará una notificación a TODOS los jugadores.`,
+      onConfirm: async () => {
+        try {
+          const response = await fetch(`http://localhost:5001/api/partidos/${id}/cancelar`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+          });
+          
+          if (response.ok) {
+            showToast(`✅ Partido vs ${rival} cancelado. Notificaciones enviadas a los jugadores`, 'success');
+            await cargarDatos();
+            if (onDataChange) onDataChange();
+          } else {
+            const error = await response.json();
+            showToast('Error al cancelar: ' + error.error, 'error');
+          }
+          setShowConfirmModal(false);
+        } catch (error) {
+          showToast('Error al cancelar: ' + error.message, 'error');
+          setShowConfirmModal(false);
+        }
+      },
+      onCancel: () => setShowConfirmModal(false),
+      type: 'danger'
+    });
+    setShowConfirmModal(true);
+  };
+
+  // ELIMINAR partido (sin notificación - solo limpieza)
+  const handleEliminar = (id, rival, fecha) => {
+    setConfirmConfig({
+      title: 'Eliminar Partido',
+      message: `¿Eliminar el partido vs ${rival} del ${fecha}?\n\n⚠️ Esto NO enviará notificaciones a los jugadores. Es solo para limpieza de registros.`,
+      onConfirm: async () => {
+        try {
+          await deletePartido(id);
+          await cargarDatos();
+          showToast(`Partido vs ${rival} eliminado correctamente`, 'success');
+          if (onDataChange) onDataChange();
+          setShowConfirmModal(false);
+        } catch (error) {
+          showToast('Error al eliminar: ' + error.message, 'error');
+          setShowConfirmModal(false);
+        }
+      },
+      onCancel: () => setShowConfirmModal(false),
+      type: 'info'
+    });
+    setShowConfirmModal(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -112,28 +170,6 @@ function GestionPartidos({ onDataChange, showToast: propShowToast }) {
       showToast('Error: ' + error.message, 'error');
     }
     setLoading(false);
-  };
-
-  const handleDelete = (id, rival, fecha) => {
-    setConfirmConfig({
-      title: 'Eliminar Partido',
-      message: `¿Estás seguro de que deseas eliminar el partido vs ${rival} del ${fecha}?`,
-      onConfirm: async () => {
-        try {
-          await deletePartido(id);
-          await cargarDatos();
-          showToast(`Partido vs ${rival} eliminado correctamente`, 'success');
-          if (onDataChange) onDataChange();
-          setShowConfirmModal(false);
-        } catch (error) {
-          showToast('Error al eliminar: ' + error.message, 'error');
-          setShowConfirmModal(false);
-        }
-      },
-      onCancel: () => setShowConfirmModal(false),
-      type: 'danger'
-    });
-    setShowConfirmModal(true);
   };
 
   const verListaConvocatoria = async (partido) => {
@@ -181,6 +217,14 @@ function GestionPartidos({ onDataChange, showToast: propShowToast }) {
     }
   };
 
+  // Verificar si un partido es futuro (para mostrar botón cancelar)
+  const esFuturo = (fecha) => {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const fechaObj = new Date(fecha);
+    return fechaObj >= hoy;
+  };
+
   const getJugadoresPorCategoria = () => {
     const convocados = [];
     const jugaron = [];
@@ -226,58 +270,71 @@ function GestionPartidos({ onDataChange, showToast: propShowToast }) {
             <button className="btn-primary" onClick={() => setShowForm(true)}>Programar primer partido</button>
           </div>
         ) : (
-          partidos.map(part => (
-            <div key={part.id} className="partido-card">
-              <div className="partido-header">
-                <div className="rival-info">
-                  <i className="fas fa-trophy"></i>
-                  <div>
-                    <h3>vs {part.rival}</h3>
-                    <p><i className="fas fa-calendar"></i> {formatearFecha(part.fecha)}</p>
-                    <p><i className="fas fa-clock"></i> {formatearHora(part.hora)} · {part.lugar}</p>
+          partidos.map(part => {
+            const esEventoFuturo = esFuturo(part.fecha);
+            
+            return (
+              <div key={part.id} className="partido-card">
+                <div className="partido-header">
+                  <div className="rival-info">
+                    <i className="fas fa-trophy"></i>
+                    <div>
+                      <h3>vs {part.rival}</h3>
+                      <p><i className="fas fa-calendar"></i> {formatearFecha(part.fecha)}</p>
+                      <p><i className="fas fa-clock"></i> {formatearHora(part.hora)} · {part.lugar}</p>
+                    </div>
+                  </div>
+                  <div className="monto-info">
+                    {part.monto_pago > 0 && (
+                      <span className="monto">💰 ${part.monto_pago}</span>
+                    )}
                   </div>
                 </div>
-                <div className="monto-info">
-                  {part.monto_pago > 0 && (
-                    <span className="monto">💰 ${part.monto_pago}</span>
+                
+                {part.hay_buseta && (
+                  <div className="partido-buseta">
+                    <i className="fas fa-bus"></i>
+                    <strong>Buseta:</strong> Sale de {part.lugar_salida} a las {formatearHora(part.hora_salida)} - ${part.valor_campo || 0} por campo
+                  </div>
+                )}
+                
+                <div className="partido-footer">
+                  <button className="btn-convocatoria" onClick={() => verListaConvocatoria(part)}>
+                    <i className="fas fa-clipboard-list"></i> <span>Ver Convocatoria</span>
+                  </button>
+                  <button className="btn-editar" onClick={() => { 
+                    setEditando(part); 
+                    setFormData({
+                      fecha: part.fecha,
+                      hora: part.hora,
+                      rival: part.rival,
+                      lugar: part.lugar,
+                      monto_pago: part.monto_pago || '',
+                      hay_buseta: part.hay_buseta || false,
+                      lugar_salida: part.lugar_salida || '',
+                      hora_salida: part.hora_salida || '',
+                      valor_campo: part.valor_campo || ''
+                    }); 
+                    setShowForm(true); 
+                  }}>
+                    <i className="fas fa-edit"></i>
+                  </button>
+                  
+                  {/* Botón CANCELAR - solo para eventos futuros (envía notificación) */}
+                  {esEventoFuturo && (
+                    <button className="btn-cancelar" onClick={() => handleCancelar(part.id, part.rival, part.fecha)}>
+                      <i className="fas fa-ban"></i> Cancelar
+                    </button>
                   )}
+                  
+                  {/* Botón ELIMINAR - siempre visible (NO envía notificación) */}
+                  <button className="btn-eliminar" onClick={() => handleEliminar(part.id, part.rival, formatearFecha(part.fecha))}>
+                    <i className="fas fa-trash"></i> Eliminar
+                  </button>
                 </div>
               </div>
-              
-              {part.hay_buseta && (
-                <div className="partido-buseta">
-                  <i className="fas fa-bus"></i>
-                  <strong>Buseta:</strong> Sale de {part.lugar_salida} a las {formatearHora(part.hora_salida)} - ${part.valor_campo || 0} por campo
-                </div>
-              )}
-              
-              <div className="partido-footer">
-                <button className="btn-convocatoria" onClick={() => verListaConvocatoria(part)}>
-                  <i className="fas fa-clipboard-list"></i> <span>Ver Convocatoria</span>
-                </button>
-                <button className="btn-editar" onClick={() => { 
-                  setEditando(part); 
-                  setFormData({
-                    fecha: part.fecha,
-                    hora: part.hora,
-                    rival: part.rival,
-                    lugar: part.lugar,
-                    monto_pago: part.monto_pago || '',
-                    hay_buseta: part.hay_buseta || false,
-                    lugar_salida: part.lugar_salida || '',
-                    hora_salida: part.hora_salida || '',
-                    valor_campo: part.valor_campo || ''
-                  }); 
-                  setShowForm(true); 
-                }}>
-                  <i className="fas fa-edit"></i>
-                </button>
-                <button className="btn-eliminar" onClick={() => handleDelete(part.id, part.rival, formatearFecha(part.fecha))}>
-                  <i className="fas fa-trash"></i>
-                </button>
-              </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
 
