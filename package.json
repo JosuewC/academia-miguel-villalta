@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node server.js",
     "server": "node server.js",
     "client": "cross-env PORT=3000 react-scripts start",
     "build": "react-scripts build",
