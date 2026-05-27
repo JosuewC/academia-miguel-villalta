@@ -10,7 +10,6 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 
 // ============ CONFIGURACIÓN POSTGRESQL ============
-// ✅ CORREGIDO: SSL siempre activado para Render
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
@@ -29,7 +28,6 @@ pool.connect((err, client, release) => {
 // Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Configurar email
 const transporter = nodemailer.createTransport({
@@ -129,7 +127,7 @@ app.post('/api/enviar-notificacion-entrenamiento', async (req, res) => {
                         </div>
                         ` : ''}
                     </div>
-                    <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/login" class="btn-iniciar">VER EN LA APP</a>
+                    <a href="${process.env.FRONTEND_URL || '/'}/login" class="btn-iniciar">VER EN LA APP</a>
                 </div>
                 <div class="footer">
                     <p>Academia de Fútbol Miguel Villalta</p>
@@ -232,7 +230,7 @@ app.post('/api/enviar-notificacion-partido', async (req, res) => {
                         </div>
                         ` : ''}
                     </div>
-                    <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/login" class="btn-iniciar">VER EN LA APP</a>
+                    <a href="${process.env.FRONTEND_URL || '/'}/login" class="btn-iniciar">VER EN LA APP</a>
                 </div>
                 <div class="footer">
                     <p>Academia de Fútbol Miguel Villalta</p>
@@ -418,7 +416,7 @@ app.post('/api/enviar-credenciales', async (req, res) => {
                         </div>
                     </div>
                     
-                    <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/login" class="btn-iniciar">INICIAR SESIÓN</a>
+                    <a href="${process.env.FRONTEND_URL || '/'}/login" class="btn-iniciar">INICIAR SESIÓN</a>
                     
                     <div class="info-adicional">
                         <p>🔐 Recomendamos cambiar tu contraseña después del primer inicio de sesión</p>
@@ -732,11 +730,6 @@ app.post('/api/entrenamientos', verificarToken, async (req, res) => {
         );
         const nuevoId = result.rows[0].id;
         
-        // ✅ COMENTADO - La función no existe en Render
-        // if (monto > 0) {
-        //     await pool.query(`SELECT sp_generar_pagos_entrenamiento($1)`, [nuevoId]);
-        // }
-        
         res.json({ success: true, id: nuevoId });
     } catch (error) {
         console.error('Error al crear entrenamiento:', error);
@@ -792,11 +785,6 @@ app.post('/api/partidos', verificarToken, async (req, res) => {
             [fecha, hora, rival, lugar, monto, hayBuseta, lugar_salida || null, hora_salida || null, valorCampo]
         );
         const nuevoId = result.rows[0].id;
-        
-        // ✅ COMENTADO - La función no existe en Render
-        // if (monto > 0) {
-        //     await pool.query(`SELECT sp_generar_pagos_partido($1)`, [nuevoId]);
-        // }
         
         res.json({ success: true, id: nuevoId });
     } catch (error) {
@@ -1104,7 +1092,6 @@ app.post('/api/qr/asistencia', verificarToken, async (req, res) => {
 // ============ ESTADÍSTICAS ============
 app.get('/api/estadisticas/equipo', verificarToken, async (req, res) => {
     try {
-        // ✅ CORREGIDO: Consulta directa sin usar función que no existe
         const result = await pool.query(`
             SELECT 
                 (SELECT COUNT(*) FROM usuarios WHERE rol = 'jugador' AND activo = true) as total_jugadores,
@@ -1134,6 +1121,17 @@ app.get('/api/estadisticas/jugador/:id', verificarToken, async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+// ============ SERVIR FRONTEND (para producción) ============
+if (process.env.NODE_ENV === 'production') {
+    // Servir archivos estáticos del frontend
+    app.use(express.static(path.join(__dirname, 'build')));
+    
+    // Cualquier ruta no API redirige al index.html del frontend
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    });
+}
 
 app.listen(PORT, () => {
     console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
