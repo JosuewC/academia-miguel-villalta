@@ -6,7 +6,7 @@
     "start": "node server.js",
     "server": "node server.js",
     "client": "cross-env PORT=3000 react-scripts start",
-    "build": "react-scripts build",
+    "build": "./node_modules/.bin/react-scripts build",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
