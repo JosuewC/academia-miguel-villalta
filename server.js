@@ -29,17 +29,18 @@ pool.connect((err, client, release) => {
 app.use(cors());
 app.use(express.json());
 
-// ============ CONFIGURACIÓN DE CORREOS - VERSIÓN CORREGIDA PARA RENDER ============
+// ============ CONFIGURACIÓN DE CORREOS - PUERTO 587 (recomendado para Render) ============
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
+    port: 587,
+    secure: false, // false para puerto 587
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     },
     tls: {
-        rejectUnauthorized: false
+        rejectUnauthorized: false,
+        ciphers: 'SSLv3'
     },
     connectionTimeout: 60000,
     greetingTimeout: 60000,
