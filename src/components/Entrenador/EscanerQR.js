@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { QrReader } from 'react-qr-reader';
+// ✅ Importación correcta para react-qr-reader versión 2.1.1
+import QrReader from 'react-qr-reader';
 import { 
   getJugadores, getEntrenamientos, getPartidos,
   updateAsistenciaEntrenamiento, updateAsistenciaPartido,
@@ -100,12 +101,12 @@ function EscanerQR({ onDataChange, showToast: propShowToast }) {
     return null;
   };
 
-  const handleScan = async (result) => {
-    if (result && !loading) {
-      const qrText = result?.text || result;
-      console.log('📷 QR escaneado:', qrText);
-      setScanResult(qrText);
-      await procesarQR(qrText);
+  // ✅ CORREGIDO: manejador para versión 2.1.1
+  const handleScan = (data) => {
+    if (data && !loading) {
+      console.log('📷 QR escaneado:', data);
+      setScanResult(data);
+      procesarQR(data);
       setShowScanner(false);
     }
   };
@@ -487,10 +488,10 @@ function EscanerQR({ onDataChange, showToast: propShowToast }) {
               </div>
               <div className="qr-reader-container">
                 <QrReader
-                  onResult={handleScan}
-                  constraints={{ facingMode: 'environment' }}
-                  containerStyle={{ width: '100%' }}
-                  videoStyle={{ width: '100%', borderRadius: '1rem' }}
+                  delay={300}
+                  onError={handleError}
+                  onScan={handleScan}
+                  style={{ width: '100%' }}
                 />
               </div>
               <p className="instrucciones">
