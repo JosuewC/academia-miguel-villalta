@@ -29,12 +29,29 @@ pool.connect((err, client, release) => {
 app.use(cors());
 app.use(express.json());
 
-// Configurar email
+// ============ CONFIGURACIÓN DE CORREOS - VERSIÓN CORREGIDA PARA RENDER ============
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
+    },
+    tls: {
+        rejectUnauthorized: false
+    },
+    connectionTimeout: 60000,
+    greetingTimeout: 60000,
+    socketTimeout: 60000
+});
+
+// Verificar conexión SMTP al iniciar
+transporter.verify((error, success) => {
+    if (error) {
+        console.error('❌ Error de configuración de correo:', error);
+    } else {
+        console.log('✅ Servidor de correo configurado correctamente');
     }
 });
 
@@ -54,6 +71,23 @@ const verificarToken = (req, res, next) => {
     }
 };
 
+// Función auxiliar para enviar correos (evita repetir código)
+async function enviarCorreo(destinatario, asunto, htmlContent) {
+    try {
+        const info = await transporter.sendMail({
+            from: `"Academia Miguel Villalta" <${process.env.EMAIL_USER}>`,
+            to: destinatario,
+            subject: asunto,
+            html: htmlContent
+        });
+        console.log(`✅ Correo enviado a: ${destinatario}`);
+        return true;
+    } catch (error) {
+        console.error(`❌ Error enviando correo a ${destinatario}:`, error.message);
+        return false;
+    }
+}
+
 // ============ FUNCIONES DE NOTIFICACIÓN ============
 
 // Notificación de entrenamiento ACTUALIZADO
@@ -63,6 +97,7 @@ async function enviarNotificacionEntrenamientoUpdate(entrenamiento, jugadores) {
         <html>
         <head>
             <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Entrenamiento Actualizado - Academia Miguel Villalta</title>
             <style>
                 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -140,13 +175,7 @@ async function enviarNotificacionEntrenamientoUpdate(entrenamiento, jugadores) {
     
     for (const jugador of jugadores) {
         if (jugador.email) {
-            await transporter.sendMail({
-                from: `"Academia Miguel Villalta" <${process.env.EMAIL_USER}>`,
-                to: jugador.email,
-                subject: `✏️ Entrenamiento Actualizado - ${new Date(entrenamiento.fecha).toLocaleDateString()}`,
-                html: htmlContent
-            });
-            console.log(`✅ Notificación de actualización de entrenamiento enviada a: ${jugador.email}`);
+            await enviarCorreo(jugador.email, `✏️ Entrenamiento Actualizado - ${new Date(entrenamiento.fecha).toLocaleDateString()}`, htmlContent);
         }
     }
 }
@@ -216,13 +245,7 @@ async function enviarNotificacionEntrenamientoCancelado(entrenamiento, jugadores
     
     for (const jugador of jugadores) {
         if (jugador.email) {
-            await transporter.sendMail({
-                from: `"Academia Miguel Villalta" <${process.env.EMAIL_USER}>`,
-                to: jugador.email,
-                subject: `❌ Entrenamiento Cancelado - ${new Date(entrenamiento.fecha).toLocaleDateString()}`,
-                html: htmlContent
-            });
-            console.log(`✅ Notificación de cancelación de entrenamiento enviada a: ${jugador.email}`);
+            await enviarCorreo(jugador.email, `❌ Entrenamiento Cancelado - ${new Date(entrenamiento.fecha).toLocaleDateString()}`, htmlContent);
         }
     }
 }
@@ -310,13 +333,7 @@ async function enviarNotificacionPartidoUpdate(partido, jugadores) {
     
     for (const jugador of jugadores) {
         if (jugador.email) {
-            await transporter.sendMail({
-                from: `"Academia Miguel Villalta" <${process.env.EMAIL_USER}>`,
-                to: jugador.email,
-                subject: `✏️ Partido Actualizado - vs ${partido.rival}`,
-                html: htmlContent
-            });
-            console.log(`✅ Notificación de actualización de partido enviada a: ${jugador.email}`);
+            await enviarCorreo(jugador.email, `✏️ Partido Actualizado - vs ${partido.rival}`, htmlContent);
         }
     }
 }
@@ -390,13 +407,7 @@ async function enviarNotificacionPartidoCancelado(partido, jugadores) {
     
     for (const jugador of jugadores) {
         if (jugador.email) {
-            await transporter.sendMail({
-                from: `"Academia Miguel Villalta" <${process.env.EMAIL_USER}>`,
-                to: jugador.email,
-                subject: `❌ Partido Cancelado - vs ${partido.rival}`,
-                html: htmlContent
-            });
-            console.log(`✅ Notificación de cancelación de partido enviada a: ${jugador.email}`);
+            await enviarCorreo(jugador.email, `❌ Partido Cancelado - vs ${partido.rival}`, htmlContent);
         }
     }
 }
@@ -488,13 +499,7 @@ app.post('/api/enviar-notificacion-entrenamiento', async (req, res) => {
     try {
         for (const jugador of jugadores) {
             if (jugador.email) {
-                await transporter.sendMail({
-                    from: `"Academia Miguel Villalta" <${process.env.EMAIL_USER}>`,
-                    to: jugador.email,
-                    subject: '⚽ Nuevo Entrenamiento Programado',
-                    html: htmlContent
-                });
-                console.log(`✅ Correo enviado a: ${jugador.email}`);
+                await enviarCorreo(jugador.email, '⚽ Nuevo Entrenamiento Programado', htmlContent);
             }
         }
         res.json({ success: true });
@@ -591,13 +596,7 @@ app.post('/api/enviar-notificacion-partido', async (req, res) => {
     try {
         for (const jugador of jugadores) {
             if (jugador.email) {
-                await transporter.sendMail({
-                    from: `"Academia Miguel Villalta" <${process.env.EMAIL_USER}>`,
-                    to: jugador.email,
-                    subject: '⚽ Nuevo Partido Programado',
-                    html: htmlContent
-                });
-                console.log(`✅ Correo enviado a: ${jugador.email}`);
+                await enviarCorreo(jugador.email, '⚽ Nuevo Partido Programado', htmlContent);
             }
         }
         res.json({ success: true });
@@ -783,13 +782,7 @@ app.post('/api/enviar-credenciales', async (req, res) => {
     `;
     
     try {
-        await transporter.sendMail({
-            from: `"Academia Miguel Villalta" <${process.env.EMAIL_USER}>`,
-            to: email,
-            subject: '⚽ ¡Bienvenido a la Academia de Fútbol Miguel Villalta!',
-            html: htmlContent
-        });
-        console.log('✅ Correo bienvenida enviado a:', email);
+        await enviarCorreo(email, '⚽ ¡Bienvenido a la Academia de Fútbol Miguel Villalta!', htmlContent);
         res.json({ success: true });
     } catch (error) {
         console.error('Error enviando correo:', error);
@@ -896,14 +889,8 @@ app.post('/api/recuperar-password', async (req, res) => {
             </html>
         `;
         
-        await transporter.sendMail({
-            from: `"Academia Miguel Villalta" <${process.env.EMAIL_USER}>`,
-            to: usuario.email,
-            subject: '🔐 Código de recuperación de contraseña',
-            html: htmlContent
-        });
+        await enviarCorreo(usuario.email, '🔐 Código de recuperación de contraseña', htmlContent);
         
-        console.log(`✅ Código de recuperación enviado a: ${usuario.email}`);
         res.json({ success: true, message: 'Código enviado' });
     } catch (error) {
         console.error('Error:', error);
@@ -1077,103 +1064,92 @@ app.post('/api/entrenamientos', verificarToken, async (req, res) => {
         );
         const nuevoId = result.rows[0].id;
         
-        // Enviar notificaciones a los jugadores
         const jugadores = await pool.query(`SELECT * FROM usuarios WHERE rol = 'jugador' AND activo = true`);
         const entrenamientoData = { id: nuevoId, fecha, hora, lugar, duracion, objetivo, monto_pago: monto };
         
-        try {
-            for (const jugador of jugadores.rows) {
-                if (jugador.email) {
-                    const htmlContent = `
-                        <!DOCTYPE html>
-                        <html>
-                        <head>
-                            <meta charset="UTF-8">
-                            <title>Nuevo Entrenamiento - Academia Miguel Villalta</title>
-                            <style>
-                                * { margin: 0; padding: 0; box-sizing: border-box; }
-                                body { font-family: 'Segoe UI', Arial, sans-serif; background: #e8f5e9; padding: 20px; }
-                                .container { max-width: 500px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-                                .header { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); padding: 25px 20px; text-align: center; }
-                                .icono { font-size: 50px; margin-bottom: 10px; }
-                                .header h1 { color: white; font-size: 20px; }
-                                .header .slogan { color: #a5d6a7; font-size: 11px; margin-top: 5px; }
-                                .content { padding: 25px; }
-                                .bienvenida { text-align: center; margin-bottom: 20px; }
-                                .bienvenida h2 { color: #1b5e20; font-size: 20px; margin-bottom: 8px; }
-                                .card-info { background: #f1f8e9; border-radius: 12px; padding: 15px 20px; margin: 20px 0; border-left: 3px solid #2e7d32; }
-                                .info-item { margin: 10px 0; }
-                                .info-label { font-size: 11px; color: #2e7d32; text-transform: uppercase; font-weight: 600; }
-                                .info-valor { font-size: 16px; font-weight: 600; color: #1b5e20; margin-top: 3px; }
-                                .btn-iniciar { display: block; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; text-align: center; padding: 12px; border-radius: 30px; text-decoration: none; font-weight: 600; margin-top: 20px; }
-                                .footer { background: #f5f5f5; padding: 15px; text-align: center; border-top: 1px solid #e0e0e0; }
-                                .footer p { font-size: 10px; color: #999; margin: 3px 0; }
-                            </style>
-                        </head>
-                        <body>
-                            <div class="container">
-                                <div class="header">
-                                    <div class="icono">⚽</div>
-                                    <h1>ACADEMIA DE FÚTBOL<br>MIGUEL VILLALTA</h1>
-                                    <div class="slogan">Formando campeones dentro y fuera de la cancha</div>
-                                </div>
-                                <div class="content">
-                                    <div class="bienvenida">
-                                        <h2>¡Nuevo Entrenamiento Agendado!</h2>
-                                        <p>Se ha programado un nuevo entrenamiento para el equipo.</p>
-                                    </div>
-                                    <div class="card-info">
-                                        <div class="info-item">
-                                            <div class="info-label">📅 Fecha</div>
-                                            <div class="info-valor">${new Date(fecha).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
-                                        </div>
-                                        <div class="info-item">
-                                            <div class="info-label">⏰ Hora</div>
-                                            <div class="info-valor">${hora} hrs</div>
-                                        </div>
-                                        <div class="info-item">
-                                            <div class="info-label">📍 Lugar</div>
-                                            <div class="info-valor">${lugar}</div>
-                                        </div>
-                                        <div class="info-item">
-                                            <div class="info-label">⏱️ Duración</div>
-                                            <div class="info-valor">${duracion}</div>
-                                        </div>
-                                        ${objetivo ? `
-                                        <div class="info-item">
-                                            <div class="info-label">🎯 Objetivo</div>
-                                            <div class="info-valor">${objetivo}</div>
-                                        </div>
-                                        ` : ''}
-                                        ${monto > 0 ? `
-                                        <div class="info-item">
-                                            <div class="info-label">💰 Monto</div>
-                                            <div class="info-valor">$${monto}</div>
-                                        </div>
-                                        ` : ''}
-                                    </div>
-                                    <a href="${process.env.FRONTEND_URL || '/'}/login" class="btn-iniciar">VER EN LA APP</a>
-                                </div>
-                                <div class="footer">
-                                    <p>Academia de Fútbol Miguel Villalta</p>
-                                    <p>📍 Tibás, San José, Costa Rica</p>
-                                </div>
+        const htmlContent = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Nuevo Entrenamiento - Academia Miguel Villalta</title>
+                <style>
+                    * { margin: 0; padding: 0; box-sizing: border-box; }
+                    body { font-family: 'Segoe UI', Arial, sans-serif; background: #e8f5e9; padding: 20px; }
+                    .container { max-width: 500px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+                    .header { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); padding: 25px 20px; text-align: center; }
+                    .icono { font-size: 50px; margin-bottom: 10px; }
+                    .header h1 { color: white; font-size: 20px; }
+                    .header .slogan { color: #a5d6a7; font-size: 11px; margin-top: 5px; }
+                    .content { padding: 25px; }
+                    .bienvenida { text-align: center; margin-bottom: 20px; }
+                    .bienvenida h2 { color: #1b5e20; font-size: 20px; margin-bottom: 8px; }
+                    .card-info { background: #f1f8e9; border-radius: 12px; padding: 15px 20px; margin: 20px 0; border-left: 3px solid #2e7d32; }
+                    .info-item { margin: 10px 0; }
+                    .info-label { font-size: 11px; color: #2e7d32; text-transform: uppercase; font-weight: 600; }
+                    .info-valor { font-size: 16px; font-weight: 600; color: #1b5e20; margin-top: 3px; }
+                    .btn-iniciar { display: block; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; text-align: center; padding: 12px; border-radius: 30px; text-decoration: none; font-weight: 600; margin-top: 20px; }
+                    .footer { background: #f5f5f5; padding: 15px; text-align: center; border-top: 1px solid #e0e0e0; }
+                    .footer p { font-size: 10px; color: #999; margin: 3px 0; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <div class="icono">⚽</div>
+                        <h1>ACADEMIA DE FÚTBOL<br>MIGUEL VILLALTA</h1>
+                        <div class="slogan">Formando campeones dentro y fuera de la cancha</div>
+                    </div>
+                    <div class="content">
+                        <div class="bienvenida">
+                            <h2>¡Nuevo Entrenamiento Agendado!</h2>
+                            <p>Se ha programado un nuevo entrenamiento para el equipo.</p>
+                        </div>
+                        <div class="card-info">
+                            <div class="info-item">
+                                <div class="info-label">📅 Fecha</div>
+                                <div class="info-valor">${new Date(fecha).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
                             </div>
-                        </body>
-                        </html>
-                    `;
-                    
-                    await transporter.sendMail({
-                        from: `"Academia Miguel Villalta" <${process.env.EMAIL_USER}>`,
-                        to: jugador.email,
-                        subject: '⚽ Nuevo Entrenamiento Programado',
-                        html: htmlContent
-                    });
-                    console.log(`✅ Notificación de nuevo entrenamiento enviada a: ${jugador.email}`);
-                }
+                            <div class="info-item">
+                                <div class="info-label">⏰ Hora</div>
+                                <div class="info-valor">${hora} hrs</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">📍 Lugar</div>
+                                <div class="info-valor">${lugar}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">⏱️ Duración</div>
+                                <div class="info-valor">${duracion}</div>
+                            </div>
+                            ${objetivo ? `
+                            <div class="info-item">
+                                <div class="info-label">🎯 Objetivo</div>
+                                <div class="info-valor">${objetivo}</div>
+                            </div>
+                            ` : ''}
+                            ${monto > 0 ? `
+                            <div class="info-item">
+                                <div class="info-label">💰 Monto</div>
+                                <div class="info-valor">$${monto}</div>
+                            </div>
+                            ` : ''}
+                        </div>
+                        <a href="${process.env.FRONTEND_URL || '/'}/login" class="btn-iniciar">VER EN LA APP</a>
+                    </div>
+                    <div class="footer">
+                        <p>Academia de Fútbol Miguel Villalta</p>
+                        <p>📍 Tibás, San José, Costa Rica</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `;
+        
+        for (const jugador of jugadores.rows) {
+            if (jugador.email) {
+                await enviarCorreo(jugador.email, '⚽ Nuevo Entrenamiento Programado', htmlContent);
             }
-        } catch (mailError) {
-            console.error('Error enviando notificaciones por correo:', mailError);
         }
         
         res.json({ success: true, id: nuevoId });
@@ -1194,7 +1170,6 @@ app.put('/api/entrenamientos/:id', verificarToken, async (req, res) => {
             [fecha, hora, lugar, duracion, objetivo, monto, req.params.id]
         );
         
-        // Enviar notificación de ACTUALIZACIÓN
         const jugadores = await pool.query(`SELECT * FROM usuarios WHERE rol = 'jugador' AND activo = true`);
         const entrenamientoActualizado = { id: req.params.id, fecha, hora, lugar, duracion, objetivo, monto_pago: monto };
         
@@ -1207,7 +1182,7 @@ app.put('/api/entrenamientos/:id', verificarToken, async (req, res) => {
     }
 });
 
-// ============ ENTRENAMIENTOS - CANCELAR (con notificación) ============
+// ============ ENTRENAMIENTOS - CANCELAR ============
 app.post('/api/entrenamientos/:id/cancelar', verificarToken, async (req, res) => {
     try {
         const entrenamiento = await pool.query(`SELECT * FROM entrenamientos WHERE id = $1`, [req.params.id]);
@@ -1216,11 +1191,9 @@ app.post('/api/entrenamientos/:id/cancelar', verificarToken, async (req, res) =>
             return res.status(404).json({ error: 'Entrenamiento no encontrado' });
         }
         
-        // Enviar notificación de CANCELACIÓN
         const jugadores = await pool.query(`SELECT * FROM usuarios WHERE rol = 'jugador' AND activo = true`);
         await enviarNotificacionEntrenamientoCancelado(entrenamiento.rows[0], jugadores.rows);
         
-        // Eliminar el entrenamiento
         await pool.query(`DELETE FROM entrenamientos WHERE id = $1`, [req.params.id]);
         
         res.json({ success: true });
@@ -1230,7 +1203,7 @@ app.post('/api/entrenamientos/:id/cancelar', verificarToken, async (req, res) =>
     }
 });
 
-// ============ ENTRENAMIENTOS - ELIMINAR (sin notificación - solo limpieza) ============
+// ============ ENTRENAMIENTOS - ELIMINAR (sin notificación) ============
 app.delete('/api/entrenamientos/:id', verificarToken, async (req, res) => {
     try {
         await pool.query(`DELETE FROM entrenamientos WHERE id = $1`, [req.params.id]);
@@ -1266,103 +1239,91 @@ app.post('/api/partidos', verificarToken, async (req, res) => {
         );
         const nuevoId = result.rows[0].id;
         
-        // Enviar notificación de NUEVO partido
         const jugadores = await pool.query(`SELECT * FROM usuarios WHERE rol = 'jugador' AND activo = true`);
-        const partidoData = { id: nuevoId, fecha, hora, rival, lugar, monto_pago: monto, hay_buseta: hayBuseta, lugar_salida, hora_salida, valor_campo: valorCampo };
         
-        try {
-            for (const jugador of jugadores.rows) {
-                if (jugador.email) {
-                    const htmlContent = `
-                        <!DOCTYPE html>
-                        <html>
-                        <head>
-                            <meta charset="UTF-8">
-                            <title>Nuevo Partido - Academia Miguel Villalta</title>
-                            <style>
-                                * { margin: 0; padding: 0; box-sizing: border-box; }
-                                body { font-family: 'Segoe UI', Arial, sans-serif; background: #e8f5e9; padding: 20px; }
-                                .container { max-width: 500px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-                                .header { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); padding: 25px 20px; text-align: center; }
-                                .icono { font-size: 50px; margin-bottom: 10px; }
-                                .header h1 { color: white; font-size: 20px; }
-                                .header .slogan { color: #a5d6a7; font-size: 11px; margin-top: 5px; }
-                                .content { padding: 25px; }
-                                .bienvenida { text-align: center; margin-bottom: 20px; }
-                                .bienvenida h2 { color: #1b5e20; font-size: 20px; margin-bottom: 8px; }
-                                .card-info { background: #f1f8e9; border-radius: 12px; padding: 15px 20px; margin: 20px 0; border-left: 3px solid #2e7d32; }
-                                .info-item { margin: 10px 0; }
-                                .info-label { font-size: 11px; color: #2e7d32; text-transform: uppercase; font-weight: 600; }
-                                .info-valor { font-size: 16px; font-weight: 600; color: #1b5e20; margin-top: 3px; }
-                                .btn-iniciar { display: block; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; text-align: center; padding: 12px; border-radius: 30px; text-decoration: none; font-weight: 600; margin-top: 20px; }
-                                .footer { background: #f5f5f5; padding: 15px; text-align: center; border-top: 1px solid #e0e0e0; }
-                                .footer p { font-size: 10px; color: #999; margin: 3px 0; }
-                            </style>
-                        </head>
-                        <body>
-                            <div class="container">
-                                <div class="header">
-                                    <div class="icono">⚽</div>
-                                    <h1>ACADEMIA DE FÚTBOL<br>MIGUEL VILLALTA</h1>
-                                    <div class="slogan">Formando campeones dentro y fuera de la cancha</div>
-                                </div>
-                                <div class="content">
-                                    <div class="bienvenida">
-                                        <h2>¡Nuevo Partido Programado!</h2>
-                                        <p>Se ha programado un nuevo partido para el equipo.</p>
-                                    </div>
-                                    <div class="card-info">
-                                        <div class="info-item">
-                                            <div class="info-label">📅 Fecha</div>
-                                            <div class="info-valor">${new Date(fecha).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
-                                        </div>
-                                        <div class="info-item">
-                                            <div class="info-label">⏰ Hora</div>
-                                            <div class="info-valor">${hora} hrs</div>
-                                        </div>
-                                        <div class="info-item">
-                                            <div class="info-label">🏆 Rival</div>
-                                            <div class="info-valor">${rival}</div>
-                                        </div>
-                                        <div class="info-item">
-                                            <div class="info-label">📍 Lugar</div>
-                                            <div class="info-valor">${lugar}</div>
-                                        </div>
-                                        ${monto > 0 ? `
-                                        <div class="info-item">
-                                            <div class="info-label">💰 Monto</div>
-                                            <div class="info-valor">$${monto}</div>
-                                        </div>
-                                        ` : ''}
-                                        ${hayBuseta ? `
-                                        <div class="info-item">
-                                            <div class="info-label">🚌 Buseta</div>
-                                            <div class="info-valor">Sale de ${lugar_salida} a las ${hora_salida} hrs - $${valorCampo} por campo</div>
-                                        </div>
-                                        ` : ''}
-                                    </div>
-                                    <a href="${process.env.FRONTEND_URL || '/'}/login" class="btn-iniciar">VER EN LA APP</a>
-                                </div>
-                                <div class="footer">
-                                    <p>Academia de Fútbol Miguel Villalta</p>
-                                    <p>📍 Tibás, San José, Costa Rica</p>
-                                </div>
+        const htmlContent = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Nuevo Partido - Academia Miguel Villalta</title>
+                <style>
+                    * { margin: 0; padding: 0; box-sizing: border-box; }
+                    body { font-family: 'Segoe UI', Arial, sans-serif; background: #e8f5e9; padding: 20px; }
+                    .container { max-width: 500px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+                    .header { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); padding: 25px 20px; text-align: center; }
+                    .icono { font-size: 50px; margin-bottom: 10px; }
+                    .header h1 { color: white; font-size: 20px; }
+                    .header .slogan { color: #a5d6a7; font-size: 11px; margin-top: 5px; }
+                    .content { padding: 25px; }
+                    .bienvenida { text-align: center; margin-bottom: 20px; }
+                    .bienvenida h2 { color: #1b5e20; font-size: 20px; margin-bottom: 8px; }
+                    .card-info { background: #f1f8e9; border-radius: 12px; padding: 15px 20px; margin: 20px 0; border-left: 3px solid #2e7d32; }
+                    .info-item { margin: 10px 0; }
+                    .info-label { font-size: 11px; color: #2e7d32; text-transform: uppercase; font-weight: 600; }
+                    .info-valor { font-size: 16px; font-weight: 600; color: #1b5e20; margin-top: 3px; }
+                    .btn-iniciar { display: block; background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; text-align: center; padding: 12px; border-radius: 30px; text-decoration: none; font-weight: 600; margin-top: 20px; }
+                    .footer { background: #f5f5f5; padding: 15px; text-align: center; border-top: 1px solid #e0e0e0; }
+                    .footer p { font-size: 10px; color: #999; margin: 3px 0; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <div class="icono">⚽</div>
+                        <h1>ACADEMIA DE FÚTBOL<br>MIGUEL VILLALTA</h1>
+                        <div class="slogan">Formando campeones dentro y fuera de la cancha</div>
+                    </div>
+                    <div class="content">
+                        <div class="bienvenida">
+                            <h2>¡Nuevo Partido Programado!</h2>
+                            <p>Se ha programado un nuevo partido para el equipo.</p>
+                        </div>
+                        <div class="card-info">
+                            <div class="info-item">
+                                <div class="info-label">📅 Fecha</div>
+                                <div class="info-valor">${new Date(fecha).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
                             </div>
-                        </body>
-                        </html>
-                    `;
-                    
-                    await transporter.sendMail({
-                        from: `"Academia Miguel Villalta" <${process.env.EMAIL_USER}>`,
-                        to: jugador.email,
-                        subject: '⚽ Nuevo Partido Programado',
-                        html: htmlContent
-                    });
-                    console.log(`✅ Notificación de nuevo partido enviada a: ${jugador.email}`);
-                }
+                            <div class="info-item">
+                                <div class="info-label">⏰ Hora</div>
+                                <div class="info-valor">${hora} hrs</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">🏆 Rival</div>
+                                <div class="info-valor">${rival}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">📍 Lugar</div>
+                                <div class="info-valor">${lugar}</div>
+                            </div>
+                            ${monto > 0 ? `
+                            <div class="info-item">
+                                <div class="info-label">💰 Monto</div>
+                                <div class="info-valor">$${monto}</div>
+                            </div>
+                            ` : ''}
+                            ${hayBuseta ? `
+                            <div class="info-item">
+                                <div class="info-label">🚌 Buseta</div>
+                                <div class="info-valor">Sale de ${lugar_salida} a las ${hora_salida} hrs - $${valorCampo} por campo</div>
+                            </div>
+                            ` : ''}
+                        </div>
+                        <a href="${process.env.FRONTEND_URL || '/'}/login" class="btn-iniciar">VER EN LA APP</a>
+                    </div>
+                    <div class="footer">
+                        <p>Academia de Fútbol Miguel Villalta</p>
+                        <p>📍 Tibás, San José, Costa Rica</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `;
+        
+        for (const jugador of jugadores.rows) {
+            if (jugador.email) {
+                await enviarCorreo(jugador.email, '⚽ Nuevo Partido Programado', htmlContent);
             }
-        } catch (mailError) {
-            console.error('Error enviando notificaciones de partido:', mailError);
         }
         
         res.json({ success: true, id: nuevoId });
@@ -1388,7 +1349,6 @@ app.put('/api/partidos/:id', verificarToken, async (req, res) => {
             [fecha, hora, rival, lugar, monto, hayBuseta, lugar_salida || null, hora_salida || null, valorCampo, req.params.id]
         );
         
-        // Enviar notificación de ACTUALIZACIÓN
         const jugadores = await pool.query(`SELECT * FROM usuarios WHERE rol = 'jugador' AND activo = true`);
         const partidoActualizado = { id: req.params.id, fecha, hora, rival, lugar, monto_pago: monto, hay_buseta: hayBuseta, lugar_salida, hora_salida, valor_campo: valorCampo };
         
@@ -1401,7 +1361,7 @@ app.put('/api/partidos/:id', verificarToken, async (req, res) => {
     }
 });
 
-// ============ PARTIDOS - CANCELAR (con notificación) ============
+// ============ PARTIDOS - CANCELAR ============
 app.post('/api/partidos/:id/cancelar', verificarToken, async (req, res) => {
     try {
         const partido = await pool.query(`SELECT * FROM partidos WHERE id = $1`, [req.params.id]);
@@ -1410,11 +1370,9 @@ app.post('/api/partidos/:id/cancelar', verificarToken, async (req, res) => {
             return res.status(404).json({ error: 'Partido no encontrado' });
         }
         
-        // Enviar notificación de CANCELACIÓN
         const jugadores = await pool.query(`SELECT * FROM usuarios WHERE rol = 'jugador' AND activo = true`);
         await enviarNotificacionPartidoCancelado(partido.rows[0], jugadores.rows);
         
-        // Eliminar el partido
         await pool.query(`DELETE FROM partidos WHERE id = $1`, [req.params.id]);
         
         res.json({ success: true });
@@ -1424,7 +1382,7 @@ app.post('/api/partidos/:id/cancelar', verificarToken, async (req, res) => {
     }
 });
 
-// ============ PARTIDOS - ELIMINAR (sin notificación - solo limpieza) ============
+// ============ PARTIDOS - ELIMINAR (sin notificación) ============
 app.delete('/api/partidos/:id', verificarToken, async (req, res) => {
     try {
         await pool.query(`DELETE FROM partidos WHERE id = $1`, [req.params.id]);
@@ -1736,10 +1694,8 @@ app.get('/api/estadisticas/jugador/:id', verificarToken, async (req, res) => {
 
 // ============ SERVIR FRONTEND (para producción) ============
 if (process.env.NODE_ENV === 'production') {
-    // Servir archivos estáticos del frontend
     app.use(express.static(path.join(__dirname, 'build')));
     
-    // Cualquier ruta no API redirige al index.html del frontend
     app.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, 'build', 'index.html'));
     });
